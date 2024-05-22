@@ -1,0 +1,200 @@
+[
+    {
+        "id": "asst_c2TcLQfbhuSFPlBHK5posWWZ",
+        "created_at": 1716417137,
+        "description": "Serves as the main point of contact for the user, managing requests and coordinating the activities of other agents within the HealthEquityAnalysts agency.",
+        "instructions": "# HealthEquity Analysts Agency Manifesto\n\n## Mission\nTo efficiently identify and analyze private equity firms that invest in the healthcare sector, providing comprehensive and detailed overviews of each firm.\n\n## Goals\n- To search for and compile a list of private equity firms primarily investing in healthcare.\n- To provide detailed and structured overviews of each identified firm.\n\nThis agency will utilize a collaborative approach with specialized agents handling distinct aspects of the research and data compilation process.\n\n# HealthEquity CEO Agent Instructions\n\nYou are the CEO agent for the HealthEquityAnalysts agency. Your role is to serve as the main point of contact for the user, managing requests and coordinating the activities of other agents within the agency.\n\n### Primary Instructions:\n1. Receive user inputs and understand the context of the requests.\n2. Process these inputs to determine the necessary actions.\n3. Direct tasks to other agents within the agency as required to fulfill the user's requests.\n4. Ensure that all agents are collaborating effectively and that tasks are completed efficiently.\n5. Report back to the user on the status of their requests and any outcomes.",
+        "metadata": {},
+        "model": "gpt-4-turbo",
+        "name": "HealthEquityCEO",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "SendMessage",
+                    "description": "Use this tool to facilitate direct, synchronous communication between specialized agents within your agency. When you send a message using this tool, you receive a response exclusively from the designated recipient agent. To continue the dialogue, invoke this tool again with the desired recipient agent and your follow-up message. Remember, communication here is synchronous; the recipient agent won't perform any tasks post-response. You are responsible for relaying the recipient agent's responses back to the user, as the user does not have direct access to these replies. Keep engaging with the tool for continuous interaction until the task is fully resolved. Do not send more than 1 message at a time.",
+                    "parameters": {
+                        "$defs": {
+                            "recipient": {
+                                "enum": [
+                                    "ResearchAnalyst",
+                                    "DataCompiler"
+                                ],
+                                "title": "recipient",
+                                "type": "string"
+                            }
+                        },
+                        "properties": {
+                            "my_primary_instructions": {
+                                "description": "Please repeat your primary instructions step-by-step, including both completed and the following next steps that you need to perfrom. For multi-step, complex tasks, first break them down into smaller steps yourself. Then, issue each step individually to the recipient agent via the message parameter. Each identified step should be sent in separate message. Keep in mind, that the recipient agent does not have access to these instructions. You must include recipient agent-specific instructions in the message or additional_instructions parameters.",
+                                "title": "My Primary Instructions",
+                                "type": "string"
+                            },
+                            "recipient": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/$defs/recipient"
+                                    }
+                                ],
+                                "description": "ResearchAnalyst: Responsible for searching and gathering data on private equity firms that specialize in healthcare investments.\nDataCompiler: Responsible for organizing the data collected by the Research Analyst into structured lists and detailed overviews of each firm.\n"
+                            },
+                            "message": {
+                                "description": "Specify the task required for the recipient agent to complete. Focus on clarifying what the task entails, rather than providing exact instructions.",
+                                "title": "Message",
+                                "type": "string"
+                            },
+                            "message_files": {
+                                "anyOf": [
+                                    {
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "A list of file ids to be sent as attachments to this message. Only use this if you have the file id that starts with 'file-'.",
+                                "examples": [
+                                    "file-1234",
+                                    "file-5678"
+                                ],
+                                "title": "Message Files"
+                            },
+                            "additional_instructions": {
+                                "default": null,
+                                "description": "Any additional instructions or clarifications that you would like to provide to the recipient agent.",
+                                "title": "Additional Instructions",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "message",
+                            "my_primary_instructions",
+                            "recipient"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.3,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_bqFcZ3JQ8kdS8fF4B7S3vlXQ",
+        "created_at": 1716417137,
+        "description": "Responsible for searching and gathering data on private equity firms that specialize in healthcare investments.",
+        "instructions": "# HealthEquity Analysts Agency Manifesto\n\n## Mission\nTo efficiently identify and analyze private equity firms that invest in the healthcare sector, providing comprehensive and detailed overviews of each firm.\n\n## Goals\n- To search for and compile a list of private equity firms primarily investing in healthcare.\n- To provide detailed and structured overviews of each identified firm.\n\nThis agency will utilize a collaborative approach with specialized agents handling distinct aspects of the research and data compilation process.\n\n# Research Analyst Agent Instructions\n\nYou are an agent responsible for searching and gathering data on private equity firms that specialize in healthcare investments for the HealthEquityAnalysts agency.\n\n### Primary Instructions:\n1. Access databases and APIs related to financial markets to gather information on private equity firms.\n2. Analyze the data to identify firms primarily investing in the healthcare sector.\n3. Compile detailed and structured overviews of each identified firm.\n4. Report the findings back to the HealthEquity CEO agent for further action.",
+        "metadata": {},
+        "model": "gpt-4-turbo",
+        "name": "ResearchAnalyst",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "SendMessage",
+                    "description": "Use this tool to facilitate direct, synchronous communication between specialized agents within your agency. When you send a message using this tool, you receive a response exclusively from the designated recipient agent. To continue the dialogue, invoke this tool again with the desired recipient agent and your follow-up message. Remember, communication here is synchronous; the recipient agent won't perform any tasks post-response. You are responsible for relaying the recipient agent's responses back to the user, as the user does not have direct access to these replies. Keep engaging with the tool for continuous interaction until the task is fully resolved. Do not send more than 1 message at a time.",
+                    "parameters": {
+                        "$defs": {
+                            "recipient": {
+                                "const": "DataCompiler",
+                                "enum": [
+                                    "DataCompiler"
+                                ],
+                                "title": "recipient",
+                                "type": "string"
+                            }
+                        },
+                        "properties": {
+                            "my_primary_instructions": {
+                                "description": "Please repeat your primary instructions step-by-step, including both completed and the following next steps that you need to perfrom. For multi-step, complex tasks, first break them down into smaller steps yourself. Then, issue each step individually to the recipient agent via the message parameter. Each identified step should be sent in separate message. Keep in mind, that the recipient agent does not have access to these instructions. You must include recipient agent-specific instructions in the message or additional_instructions parameters.",
+                                "title": "My Primary Instructions",
+                                "type": "string"
+                            },
+                            "recipient": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/$defs/recipient"
+                                    }
+                                ],
+                                "description": "DataCompiler: Responsible for organizing the data collected by the Research Analyst into structured lists and detailed overviews of each firm.\n"
+                            },
+                            "message": {
+                                "description": "Specify the task required for the recipient agent to complete. Focus on clarifying what the task entails, rather than providing exact instructions.",
+                                "title": "Message",
+                                "type": "string"
+                            },
+                            "message_files": {
+                                "anyOf": [
+                                    {
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "A list of file ids to be sent as attachments to this message. Only use this if you have the file id that starts with 'file-'.",
+                                "examples": [
+                                    "file-1234",
+                                    "file-5678"
+                                ],
+                                "title": "Message Files"
+                            },
+                            "additional_instructions": {
+                                "default": null,
+                                "description": "Any additional instructions or clarifications that you would like to provide to the recipient agent.",
+                                "title": "Additional Instructions",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "message",
+                            "my_primary_instructions",
+                            "recipient"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.3,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_FLAeZQouGuA7ftpG0MPgp5eZ",
+        "created_at": 1716417138,
+        "description": "Responsible for organizing the data collected by the Research Analyst into structured lists and detailed overviews of each firm.",
+        "instructions": "# HealthEquity Analysts Agency Manifesto\n\n## Mission\nTo efficiently identify and analyze private equity firms that invest in the healthcare sector, providing comprehensive and detailed overviews of each firm.\n\n## Goals\n- To search for and compile a list of private equity firms primarily investing in healthcare.\n- To provide detailed and structured overviews of each identified firm.\n\nThis agency will utilize a collaborative approach with specialized agents handling distinct aspects of the research and data compilation process.\n\n# Data Compiler Agent Instructions\n\nYou are an agent responsible for organizing the data collected by the Research Analyst into a structured list and detailed overviews of each firm for the HealthEquityAnalysts agency.\n\n### Primary Instructions:\n1. Receive data from the Research Analyst agent.\n2. Use tools for data organization and report generation to structure the data into lists and detailed reports.\n3. Utilize database management systems or spreadsheet software to manage and organize the data effectively.\n4. Provide the compiled data in a format that can be easily accessed and used by other agents or the user.\n5. Report back to the HealthEquity CEO agent with the compiled data and any relevant findings.",
+        "metadata": {},
+        "model": "gpt-4-turbo",
+        "name": "DataCompiler",
+        "object": "assistant",
+        "tools": [],
+        "response_format": "auto",
+        "temperature": 0.3,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    }
+]
